@@ -1,0 +1,8 @@
+{
+  "name": "List 2.0",
+  "description": "A minimalist checklist synchronized in real-time between partners with private sync keys, swipe gestures, offline access, and notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

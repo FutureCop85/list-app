@@ -1,0 +1,17 @@
+{
+  "name": "Checklist",
+  "short_name": "Checklist",
+  "description": "A minimalist mobile checklist synchronized in real-time between partners",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#18181b",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

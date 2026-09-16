@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item-1",
+    "text": "Oat milk",
+    "completed": true,
+    "createdAt": 1788111283429,
+    "updatedAt": 1788114894233,
+    "completedAt": 1788114894233,
+    "completedBy": "Partner"
+  },
+  {
+    "id": "item-2",
+    "text": "Avocados (ripe)",
+    "completed": false,
+    "createdAt": 1788111883429,
+    "updatedAt": 1788111883429
+  },
+  {
+    "id": "item-3",
+    "text": "Sourdough bread",
+    "completed": false,
+    "createdAt": 1788112383429,
+    "updatedAt": 1788112383429
+  },
+  {
+    "id": "item-4",
+    "text": "Fresh basil",
+    "completed": true,
+    "completedAt": 1788113883429,
+    "completedBy": "Partner",
+    "createdAt": 1788110883429,
+    "updatedAt": 1788113883430
+  }
+]
