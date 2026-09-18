@@ -696,13 +696,17 @@ async function startServer() {
           const currentRoom = clientRooms.get(ws) || sanitizeKey(payload.syncKey || 'default');
           notifyRoomPresence(currentRoom);
         } else if (type === 'list:reorder') {
-          const { itemIds, senderId } = payload;
+          const { itemIds, sortOrders, senderId } = payload;
           if (Array.isArray(itemIds) && itemIds.length > 0) {
             const idToItem = new Map(currentRecord.items.map((i) => [i.id, i]));
             const reorderedItems: GroceryItem[] = [];
             for (const id of itemIds) {
               const item = idToItem.get(id);
               if (item) {
+                const sortOrder = sortOrders?.[id];
+                if (typeof sortOrder === 'number') {
+                  item.sortOrder = sortOrder;
+                }
                 reorderedItems.push(item);
                 idToItem.delete(id);
               }
@@ -721,6 +725,7 @@ async function startServer() {
                 payload: {
                   syncKey: currentKey,
                   itemIds,
+                  sortOrders,
                   senderId,
                 },
               },

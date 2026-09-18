@@ -233,13 +233,13 @@ export default function App() {
         // Swiped Left -> Move to Next List
         if (currentIndex < lists.length - 1) {
           const nextList = lists[currentIndex + 1];
-          switchList(nextList.id, nextList);
+          switchList(nextList.id);
         }
       } else {
         // Swiped Right -> Move to Previous List
         if (currentIndex > 0) {
           const prevList = lists[currentIndex - 1];
-          switchList(prevList.id, prevList);
+          switchList(prevList.id);
         }
       }
     }

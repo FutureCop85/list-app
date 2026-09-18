@@ -166,8 +166,13 @@ export function mergeLists(
     activeItems.push(item);
   }
 
-  // Stable sort: keep newest items at the top
-  activeItems.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  // Preserve manual drag-and-drop order (sortOrder) where it's been set; items
+  // that have never been manually reordered fall back to newest-first, so a
+  // freshly added item still lands above an already-ordered list (matching the
+  // optimistic client-side prepend in addItem).
+  const orderKey = (item: GroceryItem) =>
+    typeof item.sortOrder === 'number' ? item.sortOrder : -(item.createdAt || 0);
+  activeItems.sort((a, b) => orderKey(a) - orderKey(b));
 
   return {
     items: activeItems,

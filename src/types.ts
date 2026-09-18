@@ -247,6 +247,7 @@ export type WSEvent =
       payload: {
         syncKey: string;
         itemIds: string[];
+        sortOrders?: Record<string, number>;
         senderId: string;
       };
     }

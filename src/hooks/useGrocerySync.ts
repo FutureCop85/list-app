@@ -917,7 +917,8 @@ export function useGrocerySync() {
                 for (const id of payload.itemIds) {
                   const it = idMap.get(id);
                   if (it) {
-                    next.push(it);
+                    const sortOrder = payload.sortOrders?.[id];
+                    next.push(typeof sortOrder === 'number' ? { ...it, sortOrder } : it);
                     idMap.delete(id);
                   }
                 }
@@ -1157,6 +1158,7 @@ export function useGrocerySync() {
         completed: false,
         createdAt: now,
         updatedAt: now,
+        sortOrder: -now,
       };
 
       delete tombstonesRef.current[newItem.id];
@@ -1383,10 +1385,24 @@ export function useGrocerySync() {
       const currentKey = syncKeyRef.current;
       const defaultId = listsRef.current[0]?.id || 'list-default';
       const currentListId = activeListIdRef.current || defaultId;
+      const now = Date.now();
+
+      // Stamp an explicit, persisted sort position on every item in the new
+      // order so this order survives a merge (WS reconnect / REST reconcile),
+      // which otherwise only has createdAt to sort by.
+      const orderedItems = reorderedActiveItems.map((item, index) => ({
+        ...item,
+        sortOrder: now + index,
+        updatedAt: now,
+      }));
+      const sortOrders: Record<string, number> = {};
+      orderedItems.forEach((item) => {
+        sortOrders[item.id] = item.sortOrder as number;
+      });
 
       setAllItems((prev) => {
         const otherListItems = prev.filter((i) => (i.listId || defaultId) !== currentListId);
-        const next = [...reorderedActiveItems, ...otherListItems];
+        const next = [...orderedItems, ...otherListItems];
         allItemsRef.current = next;
         persistState(
           currentKey,
@@ -1403,7 +1419,8 @@ export function useGrocerySync() {
         type: 'list:reorder',
         payload: {
           syncKey: currentKey,
-          itemIds: reorderedActiveItems.map((i) => i.id),
+          itemIds: orderedItems.map((i) => i.id),
+          sortOrders,
           senderId: clientId.current,
         },
       });
@@ -1622,6 +1639,11 @@ export function useGrocerySync() {
 
   const deleteList = useCallback(
     (id: string) => {
+      // Never delete the last remaining list: enforced once, up front, so the
+      // list's items and the network broadcast can't get out of step with
+      // whether the list itself actually gets removed.
+      if (listsRef.current.length <= 1) return;
+
       const currentKey = syncKeyRef.current;
       const now = Date.now();
       const target = listsRef.current.find((l) => l.id === id);
@@ -1629,7 +1651,6 @@ export function useGrocerySync() {
       listTombstonesRef.current[id] = now;
 
       setLists((prev) => {
-        if (prev.length <= 1) return prev;
         const remaining = prev.filter((l) => l.id !== id);
         listsRef.current = remaining;
 
