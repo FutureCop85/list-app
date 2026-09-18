@@ -349,7 +349,7 @@ export const PullToAddArea: React.FC<PullToAddAreaProps> = ({
             onKeyDown={handleKeyDown}
             placeholder="Add an item..."
             autoComplete="off"
-            className="flex-1 bg-transparent text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 font-medium tracking-tight focus:outline-hidden"
+            className="flex-1 min-w-0 bg-transparent text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 font-medium tracking-tight focus:outline-hidden"
           />
 
           {newItemText && (

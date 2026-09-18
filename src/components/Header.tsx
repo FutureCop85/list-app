@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, BellOff, WifiOff, Key } from 'lucide-react';
+import { Bell, BellOff, WifiOff, Key, Palette as PaletteIcon } from 'lucide-react';
 import { SyncStatus } from '../types';
 import { PastelPalette } from '../utils/pastels';
 
@@ -13,6 +13,7 @@ interface HeaderProps {
   completedCount: number;
   syncKey: string;
   onOpenSyncModal: () => void;
+  onOpenThemeModal: () => void;
   palette?: PastelPalette;
 }
 
@@ -26,6 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
   completedCount,
   syncKey,
   onOpenSyncModal,
+  onOpenThemeModal,
   palette,
 }) => {
   return (
@@ -65,6 +67,18 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label="Manage Sync Key"
           >
             <Key className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
+          </button>
+
+          {/* Theme Selector Button */}
+          <button
+            type="button"
+            id="open-theme-btn"
+            onClick={onOpenThemeModal}
+            className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 transition-all active:scale-90 flex items-center justify-center"
+            title="Choose app theme"
+            aria-label="Choose app theme"
+          >
+            <PaletteIcon className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
           </button>
 
           {/* Sync Status Badge / Orb */}

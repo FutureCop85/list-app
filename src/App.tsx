@@ -3,6 +3,7 @@ import { motion, AnimatePresence, Reorder } from 'motion/react';
 import { CheckSquare, ChevronDown, CheckCheck } from 'lucide-react';
 import { useGrocerySync } from './hooks/useGrocerySync';
 import { useSystemTheme } from './hooks/useSystemTheme';
+import { useTheme } from './hooks/useTheme';
 import { Header } from './components/Header';
 import { ListTabBar } from './components/ListTabBar';
 import { CreateListModal } from './components/CreateListModal';
@@ -11,6 +12,7 @@ import { ActiveGroceryItemRow, CompletedGroceryItemRow } from './components/Groc
 import { PullToAddArea } from './components/PullToAddArea';
 import { ClearListModal } from './components/ClearListModal';
 import { SyncKeyModal } from './components/SyncKeyModal';
+import { ThemeModal } from './components/ThemeModal';
 import { NotificationToast } from './components/NotificationToast';
 import { GhostTypingItem } from './components/GhostTypingItem';
 import { Footer } from './components/Footer';
@@ -20,6 +22,7 @@ import { getColorForList, PASTEL_PALETTES } from './utils/pastels';
 export default function App() {
   // Sync OS theme automatically
   useSystemTheme();
+  const { theme, setTheme } = useTheme();
 
   const {
     items,
@@ -60,6 +63,7 @@ export default function App() {
 
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false);
   const [optionsList, setOptionsList] = useState<UserList | null>(null);
   const [showCompleted, setShowCompleted] = useState(true);
@@ -269,6 +273,7 @@ export default function App() {
         completedCount={completedItems.length}
         syncKey={syncKey}
         onOpenSyncModal={() => setIsSyncModalOpen(true)}
+        onOpenThemeModal={() => setIsThemeModalOpen(true)}
         palette={activePalette}
       />
 
@@ -463,6 +468,14 @@ export default function App() {
         onSwitchSyncKey={switchSyncKey}
         onGenerateNewKey={generateNewSyncKey}
         getShareUrl={getShareUrl}
+      />
+
+      {/* App Theme Selector */}
+      <ThemeModal
+        isOpen={isThemeModalOpen}
+        onClose={() => setIsThemeModalOpen(false)}
+        theme={theme}
+        onSelectTheme={setTheme}
       />
 
       {/* Create New List Modal */}
