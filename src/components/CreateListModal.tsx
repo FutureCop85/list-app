@@ -100,7 +100,7 @@ export const CreateListModal: React.FC<CreateListModalProps> = ({
               type="button"
               id="close-create-list-btn"
               onClick={onClose}
-              className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-90 cursor-pointer"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
@@ -126,7 +126,7 @@ export const CreateListModal: React.FC<CreateListModalProps> = ({
                 }}
                 placeholder="e.g., Asian Supermarket"
                 maxLength={40}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-750 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 text-sm font-medium tracking-tight focus:outline-hidden focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:bg-white dark:focus:bg-zinc-800 transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 text-sm font-medium tracking-tight focus:outline-hidden focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:bg-white dark:focus:bg-zinc-800 transition-all"
               />
               {error && (
                 <p className="mt-1 text-xs text-rose-500 font-medium" id="create-list-error">

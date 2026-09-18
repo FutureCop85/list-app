@@ -10,7 +10,6 @@ interface PullToAddAreaProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
   inputRef?: React.RefObject<HTMLInputElement | null>;
   onTypingChange?: (isTyping: boolean) => void;
-  partnerTyping?: { isTyping: boolean; name: string } | null;
   isReordering?: boolean;
   palette?: PastelPalette;
 }
@@ -24,7 +23,6 @@ export const PullToAddArea: React.FC<PullToAddAreaProps> = ({
   containerRef,
   inputRef: externalInputRef,
   onTypingChange,
-  partnerTyping,
   isReordering = false,
   palette,
 }) => {
@@ -385,27 +383,6 @@ export const PullToAddArea: React.FC<PullToAddAreaProps> = ({
             <span>Add</span>
           </button>
         </form>
-
-        {/* Real-time Partner Typing Indicator */}
-        <AnimatePresence>
-          {partnerTyping?.isTyping && (
-            <motion.div
-              initial={{ opacity: 0, y: -4, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: 'auto' }}
-              exit={{ opacity: 0, y: -4, height: 0 }}
-              transition={{ duration: 0.18 }}
-              className="flex items-center gap-2 px-3 pt-2 text-xs text-zinc-500 dark:text-zinc-400 font-medium tracking-tight"
-              id="partner-typing-indicator"
-            >
-              <span className="flex gap-1 items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce" />
-              </span>
-              <span>{partnerTyping.name || 'Partner'} is typing...</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );

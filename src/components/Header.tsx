@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
               className={`text-xs font-mono font-bold tracking-wider tabular-nums shrink-0 px-2.5 py-0.5 rounded-full ${
                 palette
                   ? `${palette.pillBg} ${palette.pillText}`
-                  : 'bg-zinc-100 dark:bg-zinc-850 text-zinc-600 dark:text-zinc-400'
+                  : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400'
               }`}
               id="items-counter"
             >
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             id="open-sync-key-btn"
             onClick={onOpenSyncModal}
-            className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 transition-colors flex items-center justify-center"
+            className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 transition-all active:scale-90 flex items-center justify-center"
             title={`Private List Key: ${syncKey}. Tap to share or change.`}
             aria-label="Manage Sync Key"
           >
@@ -105,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="notification-toggle-btn"
             onClick={onRequestNotifications}
-            className={`p-1.5 rounded-full transition-colors ${
+            className={`p-1.5 rounded-full transition-all active:scale-90 ${
               notificationPermission === 'granted'
                 ? 'text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                 : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800'

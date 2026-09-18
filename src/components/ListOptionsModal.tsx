@@ -154,7 +154,7 @@ export const ListOptionsModal: React.FC<ListOptionsModalProps> = ({
               type="button"
               id="close-list-options-btn"
               onClick={onClose}
-              className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
+              className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-90 cursor-pointer shrink-0"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
@@ -164,7 +164,7 @@ export const ListOptionsModal: React.FC<ListOptionsModalProps> = ({
           {/* Quick Actions List */}
           <div className="space-y-2 mt-2">
             {/* Color Accent Picker */}
-            <div className="px-3.5 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-850/50">
+            <div className="px-3.5 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/50">
               <span className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2">
                 List Color Accent
               </span>

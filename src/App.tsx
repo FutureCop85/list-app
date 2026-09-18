@@ -12,6 +12,7 @@ import { PullToAddArea } from './components/PullToAddArea';
 import { ClearListModal } from './components/ClearListModal';
 import { SyncKeyModal } from './components/SyncKeyModal';
 import { NotificationToast } from './components/NotificationToast';
+import { GhostTypingItem } from './components/GhostTypingItem';
 import { Footer } from './components/Footer';
 import { GroceryItem, UserList } from './types';
 import { getColorForList, PASTEL_PALETTES } from './utils/pastels';
@@ -296,21 +297,29 @@ export default function App() {
           containerRef={containerRef}
           inputRef={inputRef}
           onTypingChange={broadcastTyping}
-          partnerTyping={partnerTyping}
           isReordering={isReordering}
           palette={activePalette}
         />
 
         {/* Active List Content Area with Smooth Slide & Cross-fade Transition */}
+        <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={activeListId}
-          initial={{ opacity: 0.6, x: slideDir === 'left' ? 14 : -14 }}
+          initial={{ opacity: 0, x: slideDir === 'left' ? 14 : -14 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.18, ease: 'easeOut' }}
+          exit={{ opacity: 0, x: slideDir === 'left' ? -10 : 10 }}
+          transition={{ duration: 0.15, ease: 'easeOut' }}
           className="flex-1 flex flex-col"
         >
+          {/* Live ghost placeholder while partner is composing a new item */}
+          <AnimatePresence initial={false}>
+            {partnerTyping?.isTyping && (
+              <GhostTypingItem key="ghost-typing" name={partnerTyping.name || 'Partner'} />
+            )}
+          </AnimatePresence>
+
           {/* Empty State */}
-          {items.length === 0 && (
+          {items.length === 0 && !partnerTyping?.isTyping && (
             <div
               id="empty-list-state"
               onClick={handleEmptyStateClick}
@@ -422,6 +431,7 @@ export default function App() {
             </div>
           )}
         </motion.div>
+        </AnimatePresence>
 
         {/* Minimalist footnote */}
         <div className="mt-8 text-center text-[11px] text-zinc-400 dark:text-zinc-500 select-none">
