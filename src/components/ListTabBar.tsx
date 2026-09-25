@@ -88,7 +88,7 @@ export const ListTabBar: React.FC<ListTabBarProps> = ({
   }, [canScrollLeft, canScrollRight]);
 
   return (
-    <div className="relative w-full mb-2">
+    <div className="relative w-full">
       {/* Left cross-fade gradient overlay */}
       <div
         className={`absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-zinc-100/95 dark:from-zinc-950/95 via-zinc-100/50 dark:via-zinc-950/50 to-transparent pointer-events-none z-10 transition-opacity duration-200 ${

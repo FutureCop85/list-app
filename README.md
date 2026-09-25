@@ -88,7 +88,7 @@ data/
   lists/<key>.json          Persisted state per sync key
   groceries.json             Legacy single-list data file (migrated automatically)
 public/
-  manifest.json, sw.js, icon.svg   PWA assets
+  manifest.json, sw.js, icon-*.png  PWA assets
 ```
 
 ## Notes

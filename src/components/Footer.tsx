@@ -1,7 +1,7 @@
 import React from 'react';
 
 // App version using yymmdd-nn format (nn is daily change counter starting at 01)
-export const APP_VERSION = '260913-02';
+export const APP_VERSION = '260925-01';
 
 export const Footer: React.FC = () => {
   return (

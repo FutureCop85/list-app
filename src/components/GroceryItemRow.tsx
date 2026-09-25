@@ -86,6 +86,7 @@ export const ActiveGroceryItemRow: React.FC<ActiveGroceryItemRowProps> = ({
   const startCoordRef = useRef<{ x: number; y: number } | null>(null);
   const savedPointerEventRef = useRef<PointerEvent | React.PointerEvent | null>(null);
   const hasDraggedRef = useRef<boolean>(false);
+  const detachPendingHoldRef = useRef<(() => void) | null>(null);
 
   // Sync editText if item.text changes remotely
   useEffect(() => {
@@ -117,6 +118,7 @@ export const ActiveGroceryItemRow: React.FC<ActiveGroceryItemRowProps> = ({
 
   useEffect(() => {
     return () => {
+      detachPendingHoldRef.current?.();
       if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
       if (unlockScrollRef.current) {
         unlockScrollRef.current();
@@ -166,7 +168,34 @@ export const ActiveGroceryItemRow: React.FC<ActiveGroceryItemRowProps> = ({
       clearTimeout(holdTimerRef.current);
     }
 
+    // Track the pending hold at window level: a pull-to-add gesture can shift this
+    // row out from under the pointer, so row-level move/up events may never arrive
+    detachPendingHoldRef.current?.();
+    const cancelPendingHold = () => {
+      detachPendingHoldRef.current?.();
+      if (holdTimerRef.current) {
+        clearTimeout(holdTimerRef.current);
+        holdTimerRef.current = null;
+      }
+      startCoordRef.current = null;
+    };
+    const onWindowMove = (ev: PointerEvent) => {
+      const start = startCoordRef.current;
+      if (!start) return;
+      if (Math.abs(ev.clientX - start.x) > 8 || Math.abs(ev.clientY - start.y) > 8) cancelPendingHold();
+    };
+    window.addEventListener('pointermove', onWindowMove);
+    window.addEventListener('pointerup', cancelPendingHold);
+    window.addEventListener('pointercancel', cancelPendingHold);
+    detachPendingHoldRef.current = () => {
+      window.removeEventListener('pointermove', onWindowMove);
+      window.removeEventListener('pointerup', cancelPendingHold);
+      window.removeEventListener('pointercancel', cancelPendingHold);
+      detachPendingHoldRef.current = null;
+    };
+
     holdTimerRef.current = setTimeout(() => {
+      detachPendingHoldRef.current?.();
       setIsHeld(true);
       hasDraggedRef.current = true;
       triggerHaptic(40);

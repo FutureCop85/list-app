@@ -19,6 +19,8 @@ export function useTheme() {
   useEffect(() => {
     if (typeof document === 'undefined') return;
     document.documentElement.classList.toggle('theme-8bit', theme === '8bit');
+    const favicon = document.getElementById('app-favicon') as HTMLLinkElement | null;
+    if (favicon) favicon.href = theme === '8bit' ? '/favicon-8bit.png' : '/favicon.png';
   }, [theme]);
 
   const setTheme = useCallback((next: AppTheme) => {

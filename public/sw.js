@@ -1,9 +1,12 @@
-const CACHE_NAME = 'checklist-cache-v260913-02';
+const CACHE_NAME = 'checklist-cache-v260925-01';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icon.svg'
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
+  '/favicon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -80,8 +83,8 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: '/icon.svg',
-      badge: '/icon.svg',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
       vibrate: [100, 50, 100],
       data: { url: '/' }
     })

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, BellOff, WifiOff, Key, Palette as PaletteIcon } from 'lucide-react';
+import { WifiOff, Settings } from 'lucide-react';
 import { SyncStatus } from '../types';
 import { PastelPalette } from '../utils/pastels';
 
@@ -7,13 +7,9 @@ interface HeaderProps {
   syncStatus: SyncStatus;
   partnerActive: boolean;
   partnerName?: string;
-  notificationPermission: NotificationPermission;
-  onRequestNotifications: () => void;
   itemCount: number;
   completedCount: number;
-  syncKey: string;
-  onOpenSyncModal: () => void;
-  onOpenThemeModal: () => void;
+  onOpenSettings: () => void;
   palette?: PastelPalette;
 }
 
@@ -21,13 +17,9 @@ export const Header: React.FC<HeaderProps> = ({
   syncStatus,
   partnerActive,
   partnerName = 'Partner',
-  notificationPermission,
-  onRequestNotifications,
   itemCount,
   completedCount,
-  syncKey,
-  onOpenSyncModal,
-  onOpenThemeModal,
+  onOpenSettings,
   palette,
 }) => {
   return (
@@ -55,32 +47,8 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Status indicator, Key button & notification toggle */}
+        {/* Status indicator & settings */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Key status button - shows only key icon */}
-          <button
-            type="button"
-            id="open-sync-key-btn"
-            onClick={onOpenSyncModal}
-            className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 transition-all active:scale-90 flex items-center justify-center"
-            title={`Private List Key: ${syncKey}. Tap to share or change.`}
-            aria-label="Manage Sync Key"
-          >
-            <Key className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
-          </button>
-
-          {/* Theme Selector Button */}
-          <button
-            type="button"
-            id="open-theme-btn"
-            onClick={onOpenThemeModal}
-            className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 transition-all active:scale-90 flex items-center justify-center"
-            title="Choose app theme"
-            aria-label="Choose app theme"
-          >
-            <PaletteIcon className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
-          </button>
-
           {/* Sync Status Badge / Orb */}
           {syncStatus === 'offline' ? (
             <div
@@ -115,27 +83,16 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           )}
 
-          {/* Notification Button */}
+          {/* Settings: sync key, theme & notifications */}
           <button
-            id="notification-toggle-btn"
-            onClick={onRequestNotifications}
-            className={`p-1.5 rounded-full transition-all active:scale-90 ${
-              notificationPermission === 'granted'
-                ? 'text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-                : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-            }`}
-            title={
-              notificationPermission === 'granted'
-                ? 'Push notifications enabled for completed items'
-                : 'Enable notifications when items are checked'
-            }
-            aria-label="Toggle notifications"
+            type="button"
+            id="open-settings-btn"
+            onClick={onOpenSettings}
+            className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 transition-all active:scale-90 flex items-center justify-center"
+            title="Settings"
+            aria-label="Open settings"
           >
-            {notificationPermission === 'granted' ? (
-              <Bell className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />
-            ) : (
-              <BellOff className="w-3.5 h-3.5" />
-            )}
+            <Settings className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
           </button>
         </div>
       </div>

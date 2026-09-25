@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, Reorder } from 'motion/react';
-import { CheckSquare, ChevronDown, CheckCheck } from 'lucide-react';
+import { ChevronDown, CheckCheck } from 'lucide-react';
 import { useGrocerySync } from './hooks/useGrocerySync';
 import { useSystemTheme } from './hooks/useSystemTheme';
 import { useTheme } from './hooks/useTheme';
@@ -11,8 +11,7 @@ import { ListOptionsModal } from './components/ListOptionsModal';
 import { ActiveGroceryItemRow, CompletedGroceryItemRow } from './components/GroceryItemRow';
 import { PullToAddArea } from './components/PullToAddArea';
 import { ClearListModal } from './components/ClearListModal';
-import { SyncKeyModal } from './components/SyncKeyModal';
-import { ThemeModal } from './components/ThemeModal';
+import { SettingsModal } from './components/SettingsModal';
 import { NotificationToast } from './components/NotificationToast';
 import { GhostTypingItem } from './components/GhostTypingItem';
 import { Footer } from './components/Footer';
@@ -62,11 +61,10 @@ export default function App() {
   } = useGrocerySync();
 
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
-  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
-  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false);
   const [optionsList, setOptionsList] = useState<UserList | null>(null);
-  const [showCompleted, setShowCompleted] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   const otherLists = useMemo(() => lists.filter((l) => l.id !== activeListId), [lists, activeListId]);
 
@@ -187,11 +185,6 @@ export default function App() {
     }
   }, [items, reorderItems]);
 
-  const handleEmptyStateClick = () => {
-    inputRef.current?.focus();
-    inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  };
-
   // Track swipe direction for smooth list transitions
   const [slideDir, setSlideDir] = useState<'left' | 'right'>('left');
   const prevIndexRef = useRef(0);
@@ -267,13 +260,9 @@ export default function App() {
         syncStatus={syncStatus}
         partnerActive={partnerActive}
         partnerName={partnerName}
-        notificationPermission={notificationPermission}
-        onRequestNotifications={requestNotifications}
         itemCount={items.length}
         completedCount={completedItems.length}
-        syncKey={syncKey}
-        onOpenSyncModal={() => setIsSyncModalOpen(true)}
-        onOpenThemeModal={() => setIsThemeModalOpen(true)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
         palette={activePalette}
       />
 
@@ -303,6 +292,7 @@ export default function App() {
           inputRef={inputRef}
           onTypingChange={broadcastTyping}
           isReordering={isReordering}
+          isEmpty={items.length === 0}
           palette={activePalette}
         />
 
@@ -322,46 +312,6 @@ export default function App() {
               <GhostTypingItem key="ghost-typing" name={partnerTyping.name || 'Partner'} />
             )}
           </AnimatePresence>
-
-          {/* Empty State */}
-          {items.length === 0 && !partnerTyping?.isTyping && (
-            <div
-              id="empty-list-state"
-              onClick={handleEmptyStateClick}
-              className="flex-1 flex flex-col items-center justify-center text-center py-20 px-6 cursor-pointer select-none"
-            >
-              <div
-                className="w-14 h-14 rounded-2xl bg-white border border-dashed border-white shadow-sm flex items-center justify-center mb-4 transition-all"
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderWidth: '1px',
-                  borderStyle: 'dashed',
-                  borderColor: '#ffffff',
-                }}
-              >
-                <CheckSquare
-                  className="w-7 h-7 stroke-[1.8] text-zinc-400"
-                  style={{
-                    borderStyle: 'dashed',
-                    backgroundColor: '#ffffff',
-                    borderColor: '#ffffff',
-                  }}
-                />
-              </div>
-              <h2
-                className="text-2xl sm:text-3xl font-serif italic tracking-normal font-medium text-[#ffc79f]"
-                style={{ color: '#ffc79f' }}
-              >
-                Checklist is empty
-              </h2>
-              <p
-                className="text-xs font-sans text-white max-w-xs mt-2 leading-relaxed"
-                style={{ color: '#ffffff' }}
-              >
-                Type an item above to add it. Pull down &amp; hold for 2 seconds to clear.
-              </p>
-            </div>
-          )}
 
           {/* Active Items Section with Smooth Reordering */}
           <Reorder.Group
@@ -440,7 +390,7 @@ export default function App() {
 
         {/* Minimalist footnote */}
         <div className="mt-8 text-center text-[11px] text-zinc-400 dark:text-zinc-500 select-none">
-          <span>{lists.length > 1 ? 'Swipe left/right to switch lists • ' : ''}Hold to reorder • Pull down to clear</span>
+          <span>{lists.length > 1 ? 'Swipe left/right to switch lists • ' : ''}Pull down to add • Hold to reorder</span>
         </div>
 
         {/* App Footer with yymmdd Version */}
@@ -457,10 +407,10 @@ export default function App() {
         totalCount={items.length}
       />
 
-      {/* Private Sync Key Modal */}
-      <SyncKeyModal
-        isOpen={isSyncModalOpen}
-        onClose={() => setIsSyncModalOpen(false)}
+      {/* Settings: sync key, theme & notifications */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
         syncKey={syncKey}
         userName={userName}
         onUpdateUserName={updateUserName}
@@ -468,14 +418,10 @@ export default function App() {
         onSwitchSyncKey={switchSyncKey}
         onGenerateNewKey={generateNewSyncKey}
         getShareUrl={getShareUrl}
-      />
-
-      {/* App Theme Selector */}
-      <ThemeModal
-        isOpen={isThemeModalOpen}
-        onClose={() => setIsThemeModalOpen(false)}
         theme={theme}
         onSelectTheme={setTheme}
+        notificationPermission={notificationPermission}
+        onRequestNotifications={requestNotifications}
       />
 
       {/* Create New List Modal */}

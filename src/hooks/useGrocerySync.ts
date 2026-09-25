@@ -499,7 +499,7 @@ export function useGrocerySync() {
       if (result === 'granted') {
         new Notification('Checklist', {
           body: 'Notifications enabled! You will be alerted when tasks are completed.',
-          icon: '/icon.svg',
+          icon: '/icon-192.png',
         });
       }
       return result;
@@ -518,21 +518,21 @@ export function useGrocerySync() {
               .then((reg) => {
                 reg.showNotification('Item Completed', {
                   body: `${displayName} checked "${taskText}"`,
-                  icon: '/icon.svg',
-                  badge: '/icon.svg',
+                  icon: '/icon-192.png',
+                  badge: '/icon-192.png',
                   vibrate: [100, 50, 100],
                 } as any);
               })
               .catch(() => {
                 new Notification('Item Completed', {
                   body: `${displayName} checked "${taskText}"`,
-                  icon: '/icon.svg',
+                  icon: '/icon-192.png',
                 });
               });
           } else {
             new Notification('Item Completed', {
               body: `${displayName} checked "${taskText}"`,
-              icon: '/icon.svg',
+              icon: '/icon-192.png',
             });
           }
         } catch (err) {

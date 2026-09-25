@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { sheetMotion, backdropMotion } from '../utils/sheetMotion';
 import { CheckCircle2, Trash2, X } from 'lucide-react';
 
 interface ClearListModalProps {
@@ -22,22 +23,17 @@ export const ClearListModal: React.FC<ClearListModalProps> = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div key="clear-list-modal" className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            {...backdropMotion}
             onClick={onClose}
             className="absolute inset-0 bg-black/40 backdrop-blur-xs"
           />
 
           {/* Modal Card */}
           <motion.div
-            initial={{ y: '100%', opacity: 0.9 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: '100%', opacity: 0.9 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+            {...sheetMotion}
             className="relative w-full max-w-sm bg-white dark:bg-zinc-900 rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl z-10 border border-zinc-100 dark:border-zinc-800"
             id="clear-list-modal"
           >
